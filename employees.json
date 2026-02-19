@@ -1,0 +1,57 @@
+[
+  {
+    "id": 1,
+    "name": "Yashi Upmanyu",
+    "department": [
+      "Finance"
+    ],
+    "salary": 10066,
+    "profile": "2",
+    "gender": "Female",
+    "startDate": "1 Jan 2015"
+  },
+  {
+    "id": 2,
+    "name": "Pragati Kavra",
+    "gender": "Female",
+    "department": [
+      "Finance",
+      "Engineer"
+    ],
+    "salary": 20000,
+    "startDate": "12 Nov 2020"
+  },
+  {
+    "id": 3,
+    "name": "Rohan Mehta",
+    "gender": "Male",
+    "department": [
+      "HR"
+    ],
+    "salary": 5678,
+    "startDate": "15 Jan 2021"
+  },
+  {
+    "id": 1771334353342,
+    "name": "anu",
+    "profile": "3",
+    "department": [
+      "Finance"
+    ],
+    "salary": 60000,
+    "gender": "Female",
+    "startDate": "13 May 2023"
+  },
+  {
+    "id": 1771480511094,
+    "name": "vaishnavi",
+    "profile": "3",
+    "department": [
+      "Sales",
+      "Engineer"
+    ],
+    "salary": 100000,
+    "gender": "Female",
+    "startDate": "14 Sep 2026"
+  }
+]

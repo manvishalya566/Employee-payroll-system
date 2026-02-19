@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Employee</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* CSS same wahi use karein jo Add User page mein thi */
+        * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: #f3f5f9; padding: 40px; }
+        .form-card { max-width: 650px; background: white; margin: auto; padding: 30px; border-radius: 10px; box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 20px; }
+        label { font-weight: 600; display: block; margin-bottom: 8px; }
+        input[type="text"], input[type="number"], select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+        .inline { display: flex; gap: 15px; align-items: center; }
+        .profile-img-group { display: flex; gap: 10px; }
+        .profile-option img { width: 50px; height: 50px; border-radius: 50%; border: 3px solid transparent; cursor: pointer; }
+        .profile-option input:checked + img { border-color: #22c55e; }
+        .btn-group { display: flex; justify-content: space-between; margin-top: 20px; }
+        button { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: 600; }
+        .submit { background: #22c55e; color: white; }
+        .cancel { background: #e5e7eb; text-decoration: none; color: black; padding: 10px 20px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="form-card">
+    <h2>Edit Employee Payroll Form</h2>
+
+    <form id="editForm" action="/update/<%= employee.id %>" method="POST">
+        
+        <div class="form-group">
+            <label>Name</label>
+            <input type="text" name="name" value="<%= employee.name %>" required>
+        </div>
+
+        <div class="form-group">
+            <label>Profile Image</label>
+            <div class="profile-img-group">
+                <% for(let i=1; i<=4; i++) { %>
+                <label class="profile-option">
+                    <input type="radio" name="profile" value="<%= i %>" <%= employee.profile == i ? 'checked' : '' %> hidden>
+                    <img src="https://i.pravatar.cc/150?img=<%= i %>">
+                </label>
+                <% } %>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Gender</label>
+            <div class="inline">
+                <label><input type="radio" name="gender" value="Male" <%= employee.gender === 'Male' ? 'checked' : '' %>> Male</label>
+                <label><input type="radio" name="gender" value="Female" <%= employee.gender === 'Female' ? 'checked' : '' %>> Female</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Department</label>
+            <div class="inline">
+                <% ['HR', 'Sales', 'Finance', 'Engineer'].forEach(dept => { %>
+                    <label>
+                        <input type="checkbox" name="department" value="<%= dept %>" 
+                        <%= employee.department.includes(dept) ? 'checked' : '' %>> <%= dept %>
+                    </label>
+                <% }); %>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Salary</label>
+            <input type="number" name="salary" value="<%= employee.salary %>" required>
+        </div>
+
+        <div class="form-group">
+            <label>Start Date</label>
+            <div class="inline">
+                <select id="day"></select>
+                <select id="month"></select>
+                <select id="year"></select>
+            </div>
+            <input type="hidden" name="startDate" id="hiddenDate" value="<%= employee.startDate %>">
+        </div>
+
+        <div class="btn-group">
+            <a href="/" class="cancel">Cancel</a>
+            <button type="submit" class="submit">Update</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    const d = document.getElementById("day"), m = document.getElementById("month"), y = document.getElementById("year");
+    
+    // Purani date nikalne ke liye (Format: "15 Jan 2021")
+    const oldDate = "<%= employee.startDate %>".split(" ");
+
+    for(let i=1; i<=31; i++) d.innerHTML += `<option ${oldDate[0] == i ? 'selected' : ''}>${i}</option>`;
+    ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].forEach(month => {
+        m.innerHTML += `<option ${oldDate[1] == month ? 'selected' : ''}>${month}</option>`;
+    });
+    for(let i=2015; i<=2030; i++) y.innerHTML += `<option ${oldDate[2] == i ? 'selected' : ''}>${i}</option>`;
+
+    document.getElementById("editForm").addEventListener("submit", function() {
+        document.getElementById("hiddenDate").value = `${d.value} ${m.value} ${y.value}`;
+    });
+</script>
+
+</body>
+</html>

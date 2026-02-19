@@ -1,0 +1,271 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Payroll Form</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: #f3f5f9; padding: 40px; margin: 0; }
+
+        .form-card {
+            max-width: 650px;
+            background: white;
+            margin: auto;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        }
+
+        h2 { text-align: center; margin-bottom: 25px; color: #2d3748; }
+
+        .form-group { margin-bottom: 20px; }
+        label { font-weight: 600; font-size: 14px; color: #555; display: block; margin-bottom: 8px; }
+
+        input[type="text"], 
+        input[type="number"], 
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .inline { display: flex; gap: 20px; align-items: center; font-size: 14px; }
+        .inline label { font-weight: 400; display: flex; align-items: center; gap: 5px; cursor: pointer; margin: 0; }
+
+        .profile-img-group { display: flex; gap: 15px; margin-top: 5px; }
+        .profile-option { cursor: pointer; position: relative; }
+        .profile-option img { 
+            width: 50px; height: 50px; border-radius: 50%; 
+            border: 3px solid transparent; transition: 0.2s; 
+        }
+        .profile-option input:checked + img { border-color: #22c55e; }
+
+        .date-group { display: flex; gap: 10px; }
+
+        .btn-group { display: flex; justify-content: space-between; margin-top: 30px; }
+        button { padding: 12px 25px; border: none; border-radius: 5px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+
+        .cancel { background: #e5e7eb; color: #374151; text-decoration: none; display: inline-block; text-align: center; }
+        .submit { background: #22c55e; color: white; }
+        .reset { background: #ef4444; color: white; }
+        
+        button:hover { opacity: 0.8; }
+    </style>
+</head>
+<body>
+
+<div class="form-card">
+    <h2>Employee Payroll Form</h2>
+
+    <form id="payrollForm" action="/add" method="POST">
+        
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="Enter Full Name" required>
+        </div>
+
+        <div class="form-group">
+            <label>Profile Image</label>
+            <div class="profile-img-group">
+                <label class="profile-option">
+                    <input type="radio" name="profile" value="1" hidden required>
+                    <img src="https://i.pravatar.cc/150?img=1" alt="p1">
+                </label>
+                <label class="profile-option">
+                    <input type="radio" name="profile" value="2" hidden>
+                    <img src="https://i.pravatar.cc/150?img=2" alt="p2">
+                </label>
+                <label class="profile-option">
+                    <input type="radio" name="profile" value="3" hidden>
+                    <img src="https://i.pravatar.cc/150?img=3" alt="p3">
+                </label>
+                <label class="profile-option">
+                    <input type="radio" name="profile" value="4" hidden>
+                    <img src="https://i.pravatar.cc/150?img=4" alt="p4">
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Gender</label>
+            <div class="inline">
+                <label><input type="radio" name="gender" value="Male" required> Male</label>
+                <label><input type="radio" name="gender" value="Female"> Female</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Department</label>
+            <div class="inline">
+                <label><input type="checkbox" name="department" value="HR"> HR</label>
+                <label><input type="checkbox" name="department" value="Sales"> Sales</label>
+                <label><input type="checkbox" name="department" value="Finance"> Finance</label>
+                <label><input type="checkbox" name="department" value="Engineer"> Engineer</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="salary">Salary</label>
+            <input type="number" name="salary" id="salary" placeholder="Enter Salary Amount" required>
+        </div>
+
+        <div class="form-group">
+            <label>Start Date</label>
+            <div class="date-group">
+                <select id="day" name="day" required></select>
+                <select id="month" name="month" required></select>
+                <select id="year" name="year" required></select>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <button type="button" class="cancel" onclick="cancelForm()">Cancel</button>
+            <button type="submit" class="submit">Submit</button>
+            <button type="reset" class="reset">Reset</button>
+        </div>
+
+    </form>
+</div>
+
+<script>
+    // Load Day, Month, Year dropdowns
+    const daySelect = document.getElementById("day");
+    const monthSelect = document.getElementById("month");
+    const yearSelect = document.getElementById("year");
+
+    daySelect.innerHTML = "<option value=''>Day</option>";
+    for(let i=1; i<=31; i++){ daySelect.innerHTML += `<option value="${i}">${i}</option>`; }
+
+    const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    monthSelect.innerHTML = "<option value=''>Month</option>";
+    months.forEach(m => monthSelect.innerHTML += `<option value="${m}">${m}</option>`);
+
+    yearSelect.innerHTML = "<option value=''>Year</option>";
+    for(let y=2020; y<=2030; y++){ yearSelect.innerHTML += `<option value="${y}">${y}</option>`; }
+
+    // Cancel Button Function
+    function cancelForm(){
+        if(confirm("Are you sure you want to go back?")){
+            window.location.href = "/"; // Yahan apne main page ka link daalein
+        }
+    }
+</script>
+
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Payroll Form</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: #f3f5f9; padding: 40px; }
+        .form-card { max-width: 650px; background: white; margin: auto; padding: 30px; border-radius: 10px; box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 20px; }
+        label { font-weight: 600; display: block; margin-bottom: 8px; }
+        input[type="text"], input[type="number"], select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+        .inline { display: flex; gap: 15px; align-items: center; }
+        .profile-img-group { display: flex; gap: 10px; }
+        .profile-option img { width: 50px; height: 50px; border-radius: 50%; border: 3px solid transparent; cursor: pointer; }
+        .profile-option input:checked + img { border-color: #22c55e; }
+        .btn-group { display: flex; justify-content: space-between; margin-top: 20px; }
+        button { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: 600; }
+        .submit { background: #22c55e; color: white; }
+        .cancel { background: #e5e7eb; text-decoration: none; color: black; padding: 10px 20px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="form-card">
+    <h2>Employee Payroll Form</h2>
+
+    <form id="payrollForm" action="/add" method="POST">
+        
+        <div class="form-group">
+            <label>Name</label>
+            <input type="text" name="name" required>
+        </div>
+
+        <div class="form-group">
+            <label>Profile Image</label>
+            <div class="profile-img-group">
+                <label class="profile-option">
+                    <input type="radio" name="profile" value="1" checked hidden>
+                    <img src="https://i.pravatar.cc/150?img=1">
+                </label>
+                <label class="profile-option">
+                    <input type="radio" name="profile" value="2" hidden>
+                    <img src="https://i.pravatar.cc/150?img=2">
+                </label>
+                <label class="profile-option">
+                    <input type="radio" name="profile" value="3" hidden>
+                    <img src="https://i.pravatar.cc/150?img=3">
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Gender</label>
+            <div class="inline">
+                <label><input type="radio" name="gender" value="Male" required> Male</label>
+                <label><input type="radio" name="gender" value="Female"> Female</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Department</label>
+            <div class="inline">
+                <label><input type="checkbox" name="department" value="HR"> HR</label>
+                <label><input type="checkbox" name="department" value="Sales"> Sales</label>
+                <label><input type="checkbox" name="department" value="Finance"> Finance</label>
+                <label><input type="checkbox" name="department" value="Engineer"> Engineer</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Salary</label>
+            <input type="number" name="salary" required>
+        </div>
+
+        <div class="form-group">
+            <label>Start Date</label>
+            <div class="inline">
+                <select id="day" required></select>
+                <select id="month" required></select>
+                <select id="year" required></select>
+            </div>
+            <input type="hidden" name="startDate" id="hiddenDate">
+        </div>
+
+        <div class="btn-group">
+            <a href="/" class="cancel">Cancel</a>
+            <button type="submit" class="submit">Submit</button>
+            <button type="reset" style="background:#ef4444; color:white;">Reset</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    const d = document.getElementById("day"), m = document.getElementById("month"), y = document.getElementById("year");
+    for(let i=1; i<=31; i++) d.innerHTML += `<option>${i}</option>`;
+    ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].forEach(month => m.innerHTML += `<option>${month}</option>`);
+    for(let i=2020; i<=2030; i++) y.innerHTML += `<option>${i}</option>`;
+
+    document.getElementById("payrollForm").addEventListener("submit", function(e) {
+        const dateValue = `${d.value} ${m.value} ${y.value}`;
+        document.getElementById("hiddenDate").value = dateValue;
+
+    });
+</script>
+
+</body>
+</html>
